@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: exapp
-          imagePullPolicy: Never
+          image: tharunika21/exp-front:v3.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000

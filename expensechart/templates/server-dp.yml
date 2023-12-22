@@ -1,0 +1,29 @@
+{{- if .Values.server.replicaCount }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.server.dpname }}
+spec:
+  replicas: {{ include "mychart.server.replicaCount" . }}
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: {{ include "mychart.server.image.repository" . }}:{{ include "mychart.server.image.tag" . }}
+        imagePullPolicy: {{ include "mychart.server.image.pullPolicy" . | default "Always" | quote }}
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 4000
+{{- end }}

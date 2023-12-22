@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
         - name: server
-          image: exserver
-          imagePullPolicy: Never
+          image: tharunika21/exp-back:v1.0
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "128Mi"

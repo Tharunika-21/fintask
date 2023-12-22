@@ -1,30 +1,12 @@
-{{- if .Values.autoscaling.enabled }}
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "expensechart.fullname" . }}
+  name: {{ .Values.serverHPA.name }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
-    name: {{ include "expensechart.fullname" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
-  metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
-    {{- end }}
-#     {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
-#     - type: Resource
-#       resource:
-#         name: memory
-#         target:
-#           type: Utilization
-#           averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
-#     {{- end }}
-# {{- end }}
+    kind: {{ .Values.serverHPA.scaleTargetRefKind }}
+    name: {{ .Values.serverHPA.scaleTargetRefName }}
+  minReplicas: {{ .Values.serverHPA.minReplicas }}
+  maxReplicas: {{ .Values.serverHPA.maxReplicas }}
+  targetCPUUtilizationPercentage: {{ .Values.serverHPA.targetCPUUtilizationPercentage }}
